@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/common/common_button.dart';
+import 'package:notes/common/custom_appbar.dart';
 import 'package:notes/controllers/note_controller.dart';
 import 'package:notes/pages/ultils/Uitilities.dart';
 
@@ -9,44 +10,48 @@ class AddNotePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NoteController notesController = NoteController.instance;
+    final NoteController addNotesController = NoteController.instance;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Note'),
+      appBar: const CustomAppBar(
+        title: 'Add Note',
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             // TextField for the Title
-            TextField(
-              controller: notesController.titleController,
+            TextFormField(
+              controller: addNotesController.titleController,
               decoration: const InputDecoration(
                 labelText: 'Title',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
               ),
             ),
-            const SizedBox(height: 16), // Spacing between Title and Description
+            const SizedBox(height: 16),
 
             // TextField for the Description
-            TextField(
-              controller: notesController.descriptionController,
+            TextFormField(
+              controller: addNotesController.descriptionController,
               decoration: const InputDecoration(
                 labelText: 'Description',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
               ),
-              maxLines: 5, // Allow up to 5 lines of description
+              maxLines: 5,
             ),
             const SizedBox(height: 20),
             // Save Button
             CommonButton(
               onTap: () {
                 // Check if title or description is empty
-                if (notesController.titleController.text.isEmpty ||
-                    notesController.descriptionController.text.isEmpty) {
+                if (addNotesController.titleController.text.isEmpty ||
+                    addNotesController.descriptionController.text.isEmpty) {
                   Utils().toastMessage('Please fill in all fields');
                 } else {
-                  notesController.addNote();
+                  addNotesController.addNote();
                   Get.back();
                   Utils().toastMessage('Note added successfully');
                 }

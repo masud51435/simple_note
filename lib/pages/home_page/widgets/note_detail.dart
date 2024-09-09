@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart'; // For date formatting
+import 'package:notes/common/custom_appbar.dart';
 import 'package:notes/model/note_model.dart';
 
 import '../../../controllers/note_controller.dart';
+import '../../../core/app_colors.dart';
 
 class NoteDetailPage extends StatelessWidget {
   final Note note;
@@ -13,55 +15,78 @@ class NoteDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate =
-        DateFormat('dd MMMM yyyy').format(note.createdAt); 
-
+    final String noteId = note.id.toString();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Note Details'),
+      appBar: CustomAppBar(
+        title: '',
         actions: [
-          IconButton(
-            icon: const Icon(Icons.delete),
+          IconButton.outlined(
             onPressed: () {
-              notesController.deleteNote(note);
-              Get.back(); // Go back to the homepage after deletion
+              showUpdateNoteDialog(context, note);
             },
+            icon: const Icon(Icons.update),
+            tooltip: 'Update',
+          ),
+          IconButton.outlined(
+            onPressed: () {
+              notesController.deleteNote(noteId);
+              Get.back();
+            },
+            icon: const Icon(Icons.delete),
+            tooltip: 'Delete',
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              note.title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: StreamBuilder<Note>(
+        stream: notesController.getNoteById(noteId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (!snapshot.hasData) {
+            return const Center(child: Text('Note not found'));
+          }
+
+          final note = snapshot.data!;
+          final formattedDate =
+              DateFormat('dd MMMM yyyy').format(note.createdAt);
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Created on: $formattedDate',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: blackColor,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  note.title,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  note.description,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontSize: 18, color: blackColor),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              note.description,
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Created on: $formattedDate', // Show the full creation date
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                showUpdateNoteDialog(context);
-              },
-              child: const Text('Edit Note'),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  void showUpdateNoteDialog(BuildContext context) {
+  void showUpdateNoteDialog(BuildContext context, Note note) {
     notesController.titleController.text = note.title;
     notesController.descriptionController.text = note.description;
 
@@ -73,14 +98,26 @@ class NoteDetailPage extends StatelessWidget {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
+              TextFormField(
                 controller: notesController.titleController,
-                decoration: const InputDecoration(hintText: 'Title'),
+                maxLines: null,
+                decoration: const InputDecoration(
+                  labelText: 'Title',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                ),
               ),
-              TextField(
+              const SizedBox(height: 20),
+              TextFormField(
                 controller: notesController.descriptionController,
-                decoration: const InputDecoration(hintText: 'Description'),
-                maxLines: 3,
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                ),
+                maxLines: null,
               ),
             ],
           ),
@@ -97,7 +134,7 @@ class NoteDetailPage extends StatelessWidget {
                   id: note.id,
                   title: notesController.titleController.text,
                   description: notesController.descriptionController.text,
-                  createdAt: note.createdAt, // Keep the original creation date
+                  createdAt: note.createdAt,
                 );
 
                 notesController.updateNote(updatedNote);

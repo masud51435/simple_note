@@ -26,13 +26,6 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: TextFormField(
               controller: controller.searchController,
-              // onChanged: (text) {},
-              // validator: (String? value) {
-              //   if (value == null || value.isEmpty) {
-              //     return 'please enter some any Id';
-              //   }
-              //   return null;
-              // },
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus!.unfocus(),
               decoration: InputDecoration(
@@ -52,8 +45,10 @@ class HomePage extends StatelessWidget {
       body: Obx(
         () {
           if (controller.isLoading.value) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: CircularProgressIndicator(
+                color: blackColor,
+              ),
             );
           }
 
@@ -92,24 +87,35 @@ class HomePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         note.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 19,
+                        ),
                       ),
                       const SizedBox(height: 15),
                       Text(
                         note.description,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: blackColor.withOpacity(0.9),
+                        ),
                       ),
-                      const SizedBox(height: 4),
+                      const Spacer(),
                       Text(
-                        'Created on: $formattedDate',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
+                        formattedDate,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: blackColor.withOpacity(0.6),
                         ),
                       ),
                     ],
@@ -121,8 +127,14 @@ class HomePage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        backgroundColor: Colors.amberAccent.shade400,
         onPressed: () => Get.toNamed('/addNote'),
-        child: const Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          size: 35,
+          color: whiteColor,
+        ),
       ),
     );
   }

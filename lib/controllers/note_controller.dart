@@ -59,6 +59,8 @@ class NoteController extends GetxController {
       'title': note.title,
       'description': note.description,
     }).then((value) {
+      titleController.clear();
+      descriptionController.clear();
       fetchNotes();
       Utils().toastMessage('Note updated successfully');
     }).catchError((error) {
@@ -66,8 +68,8 @@ class NoteController extends GetxController {
     });
   }
 
-  void deleteNote(Note note) {
-    fireStore.collection('notes').doc(note.id).delete().then((value) {
+  void deleteNote(String noteId) {
+    fireStore.collection('notes').doc(noteId).delete().then((value) {
       fetchNotes();
       Utils().toastMessage('Note Delete successfully');
     }).catchError((error) {
@@ -84,5 +86,21 @@ class NoteController extends GetxController {
               (note) => note.title.toLowerCase().contains(query.toLowerCase()))
           .toList();
     }
+  }
+
+  //method to get real time updates for a note by its ID
+  Stream<Note> getNoteById(String noteId) {
+    return fireStore
+        .collection('notes')
+        .doc(noteId)
+        .snapshots()
+        .map((snapshot) {
+      final data = snapshot.data();
+      if (data != null) {
+        return Note.fromDocument(snapshot);
+      } else {
+        throw Exception('Note not found');
+      }
+    });
   }
 }
