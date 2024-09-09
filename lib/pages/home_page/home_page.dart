@@ -32,9 +32,9 @@ class HomePage extends StatelessWidget {
                 hintText: 'Search by title',
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
-                fillColor: blackColor.withOpacity(0.25),
+                fillColor: blackColor.withOpacity(0.2),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide.none,
                 ),
               ),
