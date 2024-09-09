@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:notes/pages/home_page/widgets/add_note.dart';
 import '../pages/frontpage.dart/frontPage.dart';
 import '../pages/home_page/home_page.dart';
 import '../pages/login/login.dart';
@@ -11,6 +12,7 @@ class AppRoutes {
   static String HOMEPAGE = '/homePage';
   static String SIGNUP = '/signUp';
   static String LOGIN = '/login';
+  static String ADDNOTE = '/addNote';
 
   static List<GetPage> routes = [
     GetPage(
@@ -33,6 +35,11 @@ class AppRoutes {
       name: LOGIN,
       page: () => const Login(),
     ),
+    GetPage(
+      name: ADDNOTE,
+      page: () => const AddNotePage(),
+    ),
+   
 
   ];
 }

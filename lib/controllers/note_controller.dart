@@ -48,6 +48,8 @@ class NoteController extends GetxController {
       description: descriptionController.text,
       createdAt: DateTime.now(),
     );
+    titleController.clear();
+    descriptionController.clear();
     fireStore.collection('notes').add(note.toJson());
     fetchNotes();
   }
