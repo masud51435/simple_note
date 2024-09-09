@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:notes/common/common_button.dart';
 
 import '../../core/app_colors.dart';
@@ -43,9 +44,9 @@ class SplashScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'all of your notes, \nin one place',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 45,
                     fontWeight: FontWeight.w800,
                   ),
@@ -62,7 +63,7 @@ class SplashScreen extends StatelessWidget {
                   onTap: () {
                     final deviceStorage = GetStorage();
                     deviceStorage.write('isFirstTime', false);
-                    Get.toNamed('/login');
+                    Get.toNamed('/signUp');
                   },
                   text: 'Get Started',
                 ),

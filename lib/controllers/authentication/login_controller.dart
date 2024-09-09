@@ -56,8 +56,4 @@ class LoginController extends GetxController {
     }
   }
 
-  /// google logOut section;
-  Future<void> logOut() async {
-    await _auth.signOut();
-  }
 }

@@ -17,9 +17,9 @@ class BottomSignInSection extends StatelessWidget {
           style: GoogleFonts.poppins(),
         ),
         TextButton(
-          onPressed: () => Get.back(),
+          onPressed: () => Get.offAllNamed('/login'),
           child: Text(
-            "Sign In",
+            "LogIn",
             style: GoogleFonts.poppins(),
           ),
         ),

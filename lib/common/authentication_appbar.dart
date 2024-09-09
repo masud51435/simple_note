@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AuthenticationAppbar extends StatelessWidget implements PreferredSizeWidget {
+class AuthenticationAppbar extends StatelessWidget
+    implements PreferredSizeWidget {
   const AuthenticationAppbar({
     super.key,
   });
@@ -20,7 +20,7 @@ class AuthenticationAppbar extends StatelessWidget implements PreferredSizeWidge
       ],
     );
   }
-  
+
   @override
   // TODO: implement preferredSize
   Size get preferredSize => const Size.fromHeight(kTextTabBarHeight);

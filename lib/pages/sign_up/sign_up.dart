@@ -11,7 +11,7 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  const Scaffold(
       appBar: AuthenticationAppbar(),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
