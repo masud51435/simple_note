@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:notes/common/common_button.dart';
 
 import '../../core/app_colors.dart';
@@ -58,7 +59,11 @@ class SplashScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 CommonButton(
-                  onTap: () => Get.offNamed('/homePage'),
+                  onTap: () {
+                    final deviceStorage = GetStorage();
+                    deviceStorage.write('isFirstTime', false);
+                    Get.toNamed('/login');
+                  },
                   text: 'Get Started',
                 ),
               ],
