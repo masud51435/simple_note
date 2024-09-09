@@ -35,25 +35,25 @@ class SignUpController extends GetxController {
       )
           .then(
         (value) {
-          Utlis().toastMessage('SignUp Successfully');
+          Utils().toastMessage('SignUp Successfully');
           setLoading(false);
           Get.offAllNamed('/homePage');
         },
       ).onError((error, stackTrace) {
         setLoading(false);
-        Utlis().toastMessage(error.toString());
+        Utils().toastMessage(error.toString());
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        Utlis().toastMessage('password should be atleast 6 character');
+        Utils().toastMessage('password should be atleast 6 character');
       } else if (e.code == 'email-already-in-use') {
-        Utlis().toastMessage(
+        Utils().toastMessage(
             'The account already exists for that email,please login now');
         setLoading(false);
         Get.off(() => const Login());
       }
     } catch (e) {
-      Utlis().toastMessage(
+      Utils().toastMessage(
         e.toString(),
       );
       setLoading(false);

@@ -33,23 +33,23 @@ class LoginController extends GetxController {
       )
           .then(
         (value) {
-          Utlis().toastMessage('Login Successfully');
+          Utils().toastMessage('Login Successfully');
           setLoading(false);
           Get.offAllNamed('/homePage');
         },
       ).onError((error, stackTrace) {
         setLoading(false);
-        Utlis().toastMessage(error.toString());
+        Utils().toastMessage(error.toString());
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        Utlis().toastMessage('No user found for that email.');
+        Utils().toastMessage('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        Utlis().toastMessage('Wrong password provided for that user.');
+        Utils().toastMessage('Wrong password provided for that user.');
         setLoading(false);
       }
     } catch (e) {
-      Utlis().toastMessage(
+      Utils().toastMessage(
         e.toString(),
       );
       setLoading(false);

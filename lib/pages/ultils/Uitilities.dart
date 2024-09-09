@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class Utlis {
+class Utils {
   void toastMessage(String message) {
     Fluttertoast.showToast(
       msg: message,
