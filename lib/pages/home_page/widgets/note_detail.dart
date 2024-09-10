@@ -131,7 +131,9 @@ class NoteDetailPage extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Get.back(); // Close the dialog
+                notesController.titleController.clear();
+                notesController.descriptionController.clear();
+                Get.back();
               },
               child: const Text('Cancel'),
             ),
