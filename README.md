@@ -1,6 +1,6 @@
 # 📝 Flutter Notes App
 
-A simple note-taking application built using Flutter, Firebase for authentication and data storage, GetX for state management, and GoRouter for navigation. This app allows users to register, login, create, update, delete, and search notes, while keeping the user experience clean and responsive.
+A simple note-taking application built using Flutter, Firebase for authentication and data storage, GetX for state management, and GetXRouter for navigation. This app allows users to register, login, create, update, delete, and search notes, while keeping the user experience clean and responsive.
 
 ## 🚀 Features
 
