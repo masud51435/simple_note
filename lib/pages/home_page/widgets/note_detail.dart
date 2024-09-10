@@ -41,7 +41,11 @@ class NoteDetailPage extends StatelessWidget {
         stream: notesController.getNoteById(noteId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: CircularProgressIndicator(
+                color: blackColor,
+              ),
+            );
           }
 
           if (!snapshot.hasData) {
@@ -76,7 +80,10 @@ class NoteDetailPage extends StatelessWidget {
                 Text(
                   note.description,
                   textAlign: TextAlign.justify,
-                  style: TextStyle(fontSize: 18, color: blackColor),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: blackColor,
+                  ),
                 ),
               ],
             ),

@@ -5,6 +5,8 @@ import 'package:notes/controllers/note_controller.dart';
 import 'package:notes/core/app_colors.dart';
 import 'package:notes/pages/home_page/widgets/note_detail.dart';
 
+import 'widgets/home_appbar.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -12,36 +14,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final NoteController controller = Get.put(NoteController());
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'NoteBook',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextFormField(
-              controller: controller.searchController,
-              onTapOutside: (event) =>
-                  FocusManager.instance.primaryFocus!.unfocus(),
-              decoration: InputDecoration(
-                hintText: 'Search by title',
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: blackColor.withOpacity(0.2),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      appBar: HomeAppBar(controller: controller),
       body: Obx(
         () {
           if (controller.isLoading.value) {
@@ -71,6 +44,7 @@ class HomePage extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 20,
               mainAxisSpacing: 20,
+              childAspectRatio: 0.96,
             ),
             itemCount: controller.filterNoteList.length,
             itemBuilder: (context, index) {
@@ -112,6 +86,8 @@ class HomePage extends StatelessWidget {
                       const Spacer(),
                       Text(
                         formattedDate,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
