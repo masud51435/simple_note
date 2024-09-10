@@ -15,6 +15,7 @@ class AuthenticationRepository extends GetxController {
 
   isLogin() {
     final user = FirebaseAuth.instance.currentUser;
+
     if (user != null) {
       Get.offAllNamed('/homePage');
     } else {

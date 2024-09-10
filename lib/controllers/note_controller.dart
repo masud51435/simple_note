@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/pages/ultils/Uitilities.dart';
@@ -7,6 +8,8 @@ import '../model/note_model.dart';
 
 class NoteController extends GetxController {
   static NoteController get instance => Get.find();
+
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 
   var noteList = <Note>[].obs;
   var filterNoteList = <Note>[].obs;
@@ -33,7 +36,7 @@ class NoteController extends GetxController {
   Future<void> fetchNotes() async {
     isLoading.value = true;
     try {
-      var snapshot = await fireStore.collection('notes').get();
+      var snapshot = await fireStore.collection(userId).get();
       noteList.value =
           snapshot.docs.map((doc) => Note.fromDocument(doc)).toList();
       filterNoteList.value = noteList;
@@ -53,13 +56,13 @@ class NoteController extends GetxController {
     );
     titleController.clear();
     descriptionController.clear();
-    fireStore.collection('notes').add(note.toJson());
+    fireStore.collection(userId).add(note.toJson());
     fetchNotes();
   }
 
   // update notes
   void updateNote(Note note) {
-    fireStore.collection('notes').doc(note.id).update({
+    fireStore.collection(userId).doc(note.id).update({
       'title': note.title,
       'description': note.description,
     }).then((value) {
@@ -74,7 +77,7 @@ class NoteController extends GetxController {
 
   // delete notes by its ID
   void deleteNote(String noteId) {
-    fireStore.collection('notes').doc(noteId).delete().then((value) {
+    fireStore.collection(userId).doc(noteId).delete().then((value) {
       fetchNotes();
       Utils().toastMessage('Note Delete successfully');
     }).catchError((error) {
@@ -96,11 +99,7 @@ class NoteController extends GetxController {
 
   //method to get real time updates for a note by its ID
   Stream<Note> getNoteById(String noteId) {
-    return fireStore
-        .collection('notes')
-        .doc(noteId)
-        .snapshots()
-        .map((snapshot) {
+    return fireStore.collection(userId).doc(noteId).snapshots().map((snapshot) {
       final data = snapshot.data();
       if (data != null) {
         return Note.fromDocument(snapshot);
@@ -110,7 +109,7 @@ class NoteController extends GetxController {
     });
   }
 
-  //update search bar 
+  //update search bar
   void updateSearchQuery(String query) {
     searchQuery.value = query;
     searchNotes(query);
