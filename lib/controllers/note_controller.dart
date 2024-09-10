@@ -11,6 +11,7 @@ class NoteController extends GetxController {
   var noteList = <Note>[].obs;
   var filterNoteList = <Note>[].obs;
   var isLoading = true.obs;
+  var searchQuery = ''.obs;
 
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -107,5 +108,18 @@ class NoteController extends GetxController {
         throw Exception('Note not found');
       }
     });
+  }
+
+  //update search bar 
+  void updateSearchQuery(String query) {
+    searchQuery.value = query;
+    searchNotes(query);
+  }
+
+// clear search bar
+  void clearSearchQuery() {
+    searchController.clear();
+    updateSearchQuery('');
+    fetchNotes();
   }
 }
