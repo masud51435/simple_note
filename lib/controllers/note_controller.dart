@@ -28,6 +28,7 @@ class NoteController extends GetxController {
     });
   }
 
+  // fetch notes for show on the display
   Future<void> fetchNotes() async {
     isLoading.value = true;
     try {
@@ -42,6 +43,7 @@ class NoteController extends GetxController {
     }
   }
 
+  //add new note
   void addNote() {
     final note = Note(
       title: titleController.text,
@@ -54,6 +56,7 @@ class NoteController extends GetxController {
     fetchNotes();
   }
 
+  // update notes
   void updateNote(Note note) {
     fireStore.collection('notes').doc(note.id).update({
       'title': note.title,
@@ -68,6 +71,7 @@ class NoteController extends GetxController {
     });
   }
 
+  // delete notes by its ID
   void deleteNote(String noteId) {
     fireStore.collection('notes').doc(noteId).delete().then((value) {
       fetchNotes();
@@ -77,6 +81,7 @@ class NoteController extends GetxController {
     });
   }
 
+  // filter notes by title
   void searchNotes(String query) {
     if (query.isEmpty) {
       filterNoteList.value = noteList;
