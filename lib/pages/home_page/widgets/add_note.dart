@@ -15,7 +15,7 @@ class AddNotePage extends StatelessWidget {
       appBar: const CustomAppBar(
         title: 'Add Note',
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -34,6 +34,8 @@ class AddNotePage extends StatelessWidget {
             // TextField for the Description
             TextFormField(
               controller: addNotesController.descriptionController,
+              onTapOutside: (event) =>
+                  FocusManager.instance.primaryFocus!.unfocus(),
               decoration: const InputDecoration(
                 labelText: 'Description',
                 border: OutlineInputBorder(
