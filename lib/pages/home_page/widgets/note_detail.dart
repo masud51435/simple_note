@@ -102,31 +102,33 @@ class NoteDetailPage extends StatelessWidget {
       builder: (context) {
         return AlertDialog(
           title: const Text('Update Note'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: notesController.titleController,
-                maxLines: null,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: notesController.titleController,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                    labelText: 'Title',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: notesController.descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: notesController.descriptionController,
+                  decoration: const InputDecoration(
+                    labelText: 'Description',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
                   ),
+                  maxLines: null,
                 ),
-                maxLines: null,
-              ),
-            ],
+              ],
+            ),
           ),
           actions: [
             TextButton(
