@@ -18,6 +18,7 @@ Future<void> main() async {
 
   //initialize hive storage
   await Hive.initFlutter();
+  Hive.registerAdapter(NoteAdapter());
   await Hive.openBox<Note>('noteBox');
 
   // Initialize Firebase & Authentication Repository
