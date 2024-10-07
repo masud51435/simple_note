@@ -3,16 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:notes/controllers/authentication/authentication_repository.dart';
 import 'package:notes/core/app_colors.dart';
 import 'package:notes/core/app_routes.dart';
 import 'package:notes/firebase_options.dart';
+import 'package:notes/model/note_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //GetX local Storage
   await GetStorage.init();
+
+  //initialize hive storage
+  await Hive.initFlutter();
+  await Hive.openBox<Note>('noteBox');
 
   // Initialize Firebase & Authentication Repository
   await Firebase.initializeApp(

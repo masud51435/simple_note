@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:notes/pages/ultils/Uitilities.dart';
 
 import '../model/note_model.dart';
@@ -22,6 +23,9 @@ class NoteController extends GetxController {
 
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
+  //Initialize hive box for notes
+  Box<Note> noteBox = Hive.box<Note>('noteBox');
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -35,11 +39,28 @@ class NoteController extends GetxController {
   // fetch notes for show on the display
   Future<void> fetchNotes() async {
     isLoading.value = true;
+
+    //try loading from Hive
+    var cachedNotes = noteBox.values.toList();
+    if (cachedNotes.isNotEmpty) {
+      noteList.value = cachedNotes;
+      filterNoteList.value = noteList;
+      isLoading.value = false;
+      return;
+    }
+
+    //if no notes in hive then fetch from fireStore
     try {
       var snapshot = await fireStore.collection(userId).get();
       noteList.value =
           snapshot.docs.map((doc) => Note.fromDocument(doc)).toList();
       filterNoteList.value = noteList;
+
+      //cache notes in Hive
+      await noteBox.clear();
+      for (var note in noteList) {
+        noteBox.put(note.id, note);
+      }
     } catch (e) {
       Utils().toastMessage(e.toString());
     } finally {
@@ -47,20 +68,26 @@ class NoteController extends GetxController {
     }
   }
 
-  //add new note
+  //add new note to fireStore and Hive
   void addNote() {
     final note = Note(
+      id: DateTime.now().toString(),
       title: titleController.text,
       description: descriptionController.text,
       createdAt: DateTime.now(),
     );
     titleController.clear();
     descriptionController.clear();
-    fireStore.collection(userId).add(note.toJson());
-    fetchNotes();
+    fireStore.collection(userId).add(note.toJson()).then((docRef) {
+      note.id = docRef.id;
+
+      //cache in Hive
+      noteBox.put(note.id, note);
+      fetchNotes();
+    });
   }
 
-  // update notes
+  // update notes in fireStore and Hive
   void updateNote(Note note) {
     fireStore.collection(userId).doc(note.id).update({
       'title': note.title,
@@ -68,6 +95,9 @@ class NoteController extends GetxController {
     }).then((value) {
       titleController.clear();
       descriptionController.clear();
+
+      //update in Hive
+      noteBox.put(note.id, note);
       fetchNotes();
       Utils().toastMessage('Note updated successfully');
     }).catchError((error) {
@@ -78,6 +108,8 @@ class NoteController extends GetxController {
   // delete notes by its ID
   void deleteNote(String noteId) {
     fireStore.collection(userId).doc(noteId).delete().then((value) {
+      //delete from hive
+      noteBox.delete(noteId);
       fetchNotes();
       Utils().toastMessage('Note Delete successfully');
     }).catchError((error) {
