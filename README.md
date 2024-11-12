@@ -3,7 +3,7 @@
 A simple note-taking application built using Flutter, Firebase for authentication and data storage, GetX for state management, and GetXRouter for navigation. This app allows users to register, login, create, update, delete, and search notes, while keeping the user experience clean and responsive.
 
 ## 🚀 Features
-
+[main.dart](lib%2Fmain.dart)
 - **Firebase Authentication**: User registration and login.
 - **Firestore Database**: Store notes online.
 - **Create, Update, and Delete Notes**: Manage notes with title, description, and creation date.
